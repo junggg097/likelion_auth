@@ -50,6 +50,13 @@ public class WebSecurityConfig {
                                 "/users/register"
                         )
                         .anonymous()
+
+                        .requestMatchers("/auth/user-role")
+                        .hasRole("USER")
+
+                        .requestMatchers("/auth/admin-role")
+                        .hasRole("ADMIN")
+
                         .anyRequest()
                         .permitAll()
                 )

@@ -39,6 +39,15 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .password(passwordEncoder.encode("password1"))
                 .email("user1@gmail.com")
                 .phone("01012345678")
+                .authorities("ROLE_USER")
+                .build());
+
+        createUser(CustomUserDetails.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("password2"))
+                .email("admin@gmail.com")
+                .phone("01012345678")
+                .authorities("ROLE_ADMIN")
                 .build());
     }
 
@@ -58,6 +67,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .password(userEntity.getPassword())
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
+                .authorities(userEntity.getAuthorities())
                 .build();
 
         /*return User.withUsername(username)
