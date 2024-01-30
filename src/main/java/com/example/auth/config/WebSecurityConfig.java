@@ -3,6 +3,7 @@ package com.example.auth.config;
 import com.example.auth.jwt.JwtTokenFilter;
 import com.example.auth.jwt.JwtTokenUtils;
 import com.example.auth.oauth.OAuth2UserServiceImpl;
+import com.example.auth.oauth.OAuth2SuccessHandler;
 import com.example.auth.service.JpaUserDetailsManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ public class WebSecurityConfig {
     private final JwtTokenUtils jwtTokenUtils;
     private final UserDetailsManager manager;
     private final OAuth2UserServiceImpl oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     // 메서드의 결과를 Bean 객체로 관리해주는 어노테이션
     @Bean
@@ -82,6 +84,7 @@ public class WebSecurityConfig {
 
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/users/login")
+                        .successHandler(oAuth2SuccessHandler)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuth2UserService))
                 )
