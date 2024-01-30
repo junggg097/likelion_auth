@@ -6,6 +6,7 @@ import com.example.auth.service.JpaUserDetailsManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,7 +18,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
-
+import org.springframework.web.bind.annotation.RequestMethod;
 // @Bean을 비롯해서 여러 설정을 하기 위한 Bean 객체
 @Configuration
 @RequiredArgsConstructor
@@ -64,7 +65,14 @@ public class WebSecurityConfig {
                         
                         .requestMatchers("/auth/write-authority")
                         .hasAnyAuthority("WRITE_AUTHORITY")
-                        
+
+
+                        .requestMatchers(HttpMethod.GET, "/articles")
+                        .permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/articles")
+                        .authenticated()
+
                         .anyRequest()
                         .permitAll()
                 )
