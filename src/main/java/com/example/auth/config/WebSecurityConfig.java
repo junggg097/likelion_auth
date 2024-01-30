@@ -2,6 +2,7 @@ package com.example.auth.config;
 
 import com.example.auth.jwt.JwtTokenFilter;
 import com.example.auth.jwt.JwtTokenUtils;
+import com.example.auth.oauth.OAuth2UserServiceImpl;
 import com.example.auth.service.JpaUserDetailsManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class WebSecurityConfig {
     private final JwtTokenUtils jwtTokenUtils;
     private final UserDetailsManager manager;
+    private final OAuth2UserServiceImpl oAuth2UserService;
 
     // 메서드의 결과를 Bean 객체로 관리해주는 어노테이션
     @Bean
@@ -76,6 +79,13 @@ public class WebSecurityConfig {
                         .anyRequest()
                         .permitAll()
                 )
+
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/users/login")
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(oAuth2UserService))
+                )
+
                 // JWT를 사용하기 때문에 보안 관련 세션 해제
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
