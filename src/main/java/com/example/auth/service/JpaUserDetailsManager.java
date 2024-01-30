@@ -39,7 +39,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .password(passwordEncoder.encode("password1"))
                 .email("user1@gmail.com")
                 .phone("01012345678")
-                .authorities("ROLE_USER")
+                .authorities("ROLE_USER,READ_AUTHORITY")
                 .build());
 
         createUser(CustomUserDetails.builder()
@@ -47,7 +47,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .password(passwordEncoder.encode("password2"))
                 .email("admin@gmail.com")
                 .phone("01012345678")
-                .authorities("ROLE_ADMIN")
+                .authorities("ROLE_ADMIN,WRITE_AUTHORITY")
                 .build());
     }
 
